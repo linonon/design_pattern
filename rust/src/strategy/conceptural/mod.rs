@@ -1,0 +1,33 @@
+pub trait RouteStrategy {
+    fn build_route(&self, from: &str, to: &str);
+}
+
+pub struct WalkingStrategy;
+
+impl RouteStrategy for WalkingStrategy {
+    fn build_route(&self, from: &str, to: &str) {
+        println!("Walking route from {from} to {to}: 4km, 30min")
+    }
+}
+
+pub struct PublicTransportStrategy;
+
+impl RouteStrategy for PublicTransportStrategy {
+    fn build_route(&self, from: &str, to: &str) {
+        println!("Public transport route from {from} to {to}: 3km, 5min")
+    }
+}
+
+pub struct Navigator<T: RouteStrategy> {
+    route_strategy: T,
+}
+
+impl<T: RouteStrategy> Navigator<T> {
+    pub fn new(route_strategy: T) -> Self {
+        Self { route_strategy }
+    }
+
+    pub fn route(&self, from: &str, to: &str) {
+        self.route_strategy.build_route(from, to)
+    }
+}
